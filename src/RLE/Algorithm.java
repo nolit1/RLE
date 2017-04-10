@@ -1,12 +1,16 @@
 package RLE;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Algorithm {
+
     public static String encode(String source) {
-        // try (FileReader reader = new FileReader("C:\\\\Users\\kj280\\Desktop\\kod.txt")) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < source.length(); i++) {
             int partLength = 1;
@@ -20,11 +24,15 @@ public class Algorithm {
         }
         return buff.toString();
     }
-    //return buff.toString();
-    // } catch (IOException ex)
-    //   System.out.println(ex.getMessage());
-    //}
-    //}
+
+    public static void encodeToFile() throws IOException {
+        FileWriter writer = new FileWriter("encodeResult.txt");
+        List<String> lines = Files.readAllLines(Paths.get("C:\\Users\\kj280\\Desktop\\kot.txt"), StandardCharsets.UTF_8);
+        for(String line: lines){
+            writer.write(encode(line));
+        }
+        writer.close();
+    }
 
     public static String decode(String source) {
         StringBuilder buff = new StringBuilder();
@@ -40,11 +48,17 @@ public class Algorithm {
         return buff.toString();
     }
 
+    public static void decodeToFile() throws IOException {
+        FileWriter writer = new FileWriter("decodeResult.txt");
+        List<String> lines = Files.readAllLines(Paths.get("encodeResult.txt"), StandardCharsets.UTF_8);
+        for(String line: lines){
+            writer.write(decode(line));
+        }
+        writer.close();
+    }
 
-    public static void main(String[] args) {
-
-        String a = "aaaaabbbbbcccgggkkkccr";
-        System.out.println(encode(a));
-        System.out.println(decode(encode(a)));
+    public static void main(String[] args) throws IOException{
+        encodeToFile();
+        decodeToFile();
     }
 }
