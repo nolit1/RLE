@@ -1,5 +1,8 @@
 package RLE;
 
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,9 +47,9 @@ public class Algorithm {
         return buff.toString();
     }
 
-    public static void encodeToFile(String[] args) throws IOException {
-        FileWriter writer = new FileWriter("encodeResult.txt");
-        List<String> lines = Files.readAllLines(Paths.get(args[args.length - 1]), StandardCharsets.UTF_8);
+    private static void encodeToFile(Input args) throws IOException {
+        FileWriter writer = new FileWriter(args.getOutputFileName());
+        List<String> lines = Files.readAllLines(Paths.get(args.getInputFileName()), StandardCharsets.UTF_8);
         for (String line : lines) {
             writer.write(encode(line));
         }
@@ -74,9 +77,9 @@ public class Algorithm {
             return buff.toString();
         }
 
-    public static void decodeToFile(String[] args) throws IOException {
-        FileWriter writer = new FileWriter("decodeResult.txt");
-        List<String> lines = Files.readAllLines(Paths.get(args[args.length - 1]), StandardCharsets.UTF_8);
+    private static void decodeToFile(Input args) throws IOException {
+        FileWriter writer = new FileWriter(args.getOutputFileName());
+        List<String> lines = Files.readAllLines(Paths.get(args.getInputFileName()), StandardCharsets.UTF_8);
         for (String line : lines) {
             writer.write(decode(line));
         }
@@ -84,9 +87,15 @@ public class Algorithm {
     }
 
     public static void main(String[] args) throws IOException {
-        Input inp = new Input(args);
-        if (inp.getA()) encodeToFile(args);
-        if (inp.getB()) decodeToFile(args);
+        Input inp = new Input();
+        CmdLineParser parser = new CmdLineParser(inp);
+        try {
+            parser.parseArgument(args);
+        } catch (CmdLineException e) {
+            e.printStackTrace();
+        }
+        if (inp.getInputEncoding()) encodeToFile(inp);
+        if (inp.getOutputEncoding()) decodeToFile(inp);
     }
 }
 

@@ -1,20 +1,46 @@
 package RLE;
 
+import org.kohsuke.args4j.Argument;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+
+import java.io.IOException;
+
 public class Input {
 
-    boolean a = false;
-    boolean b = false;
+//    boolean a = false;
+//    boolean b = false;
+//    boolean c = false;
 
-    public Input(String[] args) {
-        for (String arg : args) {
-            if (arg.equals("-z")) a = true;
-            if (arg.equals("-u")) b = true;
-        }
+    @Option(name = "-z", metaVar = "encode", forbids = {"-u"}, usage = "Input file encoding")
+    private boolean inputEncoding;
+
+    @Option(name = "-u", metaVar = "decode", forbids = {"-z"}, usage = "Output file decoding")
+    private boolean outputEncoding;
+
+    @Argument(required = true, metaVar = "InputName", usage = "Input file name")
+    private String inputFileName;
+
+    @Option(name = "-out", metaVar = "OutputName", usage = "Output file name")
+    private String outputFileName;
+
+    public Boolean getInputEncoding() {
+        return inputEncoding;
     }
 
-    public boolean getA() {return a;}
+    public Boolean getOutputEncoding() {
+        return outputEncoding;
+    }
 
-    public boolean getB() {
-        return b;
+    public String getInputFileName() {
+        return inputFileName;
+    }
+
+    public String getOutputFileName() {
+        if (outputFileName == null) {
+            outputFileName = "Decode File";
+        }
+        return outputFileName;
     }
 }
