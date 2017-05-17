@@ -30,6 +30,7 @@ public class Input {
     }
 
     public Boolean getOutputEncoding() {
+
         return outputEncoding;
     }
 
@@ -39,7 +40,7 @@ public class Input {
 
     public String getOutputFileName() {
         if (outputFileName == null) {
-            outputFileName = "Decode File";
+            outputFileName = inputFileName + ".rle";
         }
         return outputFileName;
     }
